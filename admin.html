@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0C0B09">
+<title>ZOVRYN — Operations Console</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="assets/zovryn-crest.png">
+</head>
+<body class="admin-body">
+
+<!-- ============ LOGIN ============ -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <img class="brand-logo" src="assets/zovryn-logo.png" alt="ZOVRYN">
+    <div class="eyebrow">Operations Console</div>
+    <p class="small muted" style="margin:10px 0 22px">Sign in to manage leads &amp; events</p>
+    <div class="field"><label>Username</label><input id="lgUser" autocomplete="username" placeholder="admin"></div>
+    <div class="field"><label>Password</label><input id="lgPass" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+    <div class="err-msg" id="lgErr" style="text-align:center;margin-bottom:12px">Invalid credentials. Please try again.</div>
+    <button class="btn btn-gold" id="lgBtn">Enter Console</button>
+    <p class="small muted" style="margin-top:18px;line-height:1.7">Demo access — Admin: <b>admin / zovryn2026</b><br>Operations: <b>ops / ops2026</b></p>
+  </div>
+</div>
+
+<!-- ============ CONSOLE ============ -->
+<div class="admin-shell" id="console" style="display:none">
+  <div class="sync-banner local" id="aSync">Local mode — showing data saved on this device.</div>
+  <div class="admin-top">
+    <div><span class="serif" style="font-size:1.15rem;color:var(--gold);letter-spacing:.16em">ZOVRYN</span> <span class="eyebrow" style="margin-left:6px">Operations</span></div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <span class="who" id="whoami">Admin</span>
+      <button class="btn sm btn-ghost" id="refreshBtn">↻ Refresh</button>
+      <button class="btn sm btn-ghost" id="logoutBtn">Sign out</button>
+    </div>
+  </div>
+
+  <div class="admin-nav">
+    <button data-page="dash" class="active">Dashboard</button>
+    <button data-page="events">Events</button>
+    <button data-page="calendar">Calendar</button>
+    <button data-page="analytics">Analytics</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="admin-page active" id="page-dash">
+    <h2 style="margin-bottom:4px">Overview</h2>
+    <p class="small muted" style="margin-bottom:18px">Live pipeline summary</p>
+    <div class="cards-grid" id="statCards"></div>
+    <h3 style="margin:26px 0 12px;color:var(--gold)">Needs Attention</h3>
+    <div class="ev-list" id="attentionList"></div>
+  </div>
+
+  <!-- EVENTS -->
+  <div class="admin-page" id="page-events">
+    <h2 style="margin-bottom:12px">Events</h2>
+    <div class="toolbar">
+      <input id="fSearch" placeholder="Search name, mobile or File Number">
+      <select id="fStatus"><option value="">All Statuses</option></select>
+      <select id="fType"><option value="">All Event Types</option></select>
+      <select id="fPax"><option value="">Any PAX</option><option value="0-50">Up to 50</option><option value="51-150">51–150</option><option value="151-300">151–300</option><option value="301-99999">300+</option></select>
+      <input id="fDate" type="date" title="Filter by event date">
+      <button class="btn sm btn-gold" id="exportBtn">⬇ Export Excel</button>
+    </div>
+    <div class="ev-list" id="eventList"></div>
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="admin-page" id="page-calendar">
+    <div class="cal-head">
+      <h2 id="calTitle">Calendar</h2>
+      <div class="btn-row" style="width:auto">
+        <button class="btn sm btn-ghost" id="calPrev">←</button>
+        <button class="btn sm btn-ghost" id="calNext">→</button>
+      </div>
+    </div>
+    <div class="cal-grid" id="calDows"></div>
+    <div class="cal-grid" id="calGrid" style="margin-top:6px"></div>
+    <p class="small muted" style="margin-top:12px"><span class="badge new">New</span> &nbsp;<span class="badge mid">Upcoming</span> &nbsp;<span class="badge done">Past</span></p>
+  </div>
+
+  <!-- ANALYTICS -->
+  <div class="admin-page" id="page-analytics">
+    <h2 style="margin-bottom:16px">Analytics Dashboard</h2>
+    <div class="cards-grid" id="anStats" style="margin-bottom:20px"></div>
+    <div class="an-grid">
+      <div class="detail-sec"><h3>Leads by Event Type</h3><div id="anByType"></div></div>
+      <div class="detail-sec"><h3>Pipeline Stage</h3><div id="anByStage"></div></div>
+      <div class="detail-sec"><h3>Popular Menu Categories</h3><div id="anByCat"></div></div>
+      <div class="detail-sec"><h3>Guests by Event Slot</h3><div id="anBySlot"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-bg" id="detailModal">
+  <div class="modal">
+    <div class="modal-head"><h3 id="mTitle">Event</h3><button class="x" id="mClose">×</button></div>
+    <div class="modal-body" id="mBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="assets/logo-data.js"></script>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/pdf.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
