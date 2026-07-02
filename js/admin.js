@@ -9,7 +9,7 @@
   var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s));};
   var el=function(t,cls,html){var e=document.createElement(t);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;};
 
-  var STAGES=['New Lead','Requirement Received','Discussion Pending','Discussion Completed','Proposal Shared','Negotiation','Confirmed','Closed'];
+  var STAGES=['New Lead','Discussion Pending','Discussion Completed','Proposal Shared','Negotiation','Confirmed','Closed'];
   var USERS={ admin:{pass:'zovryn2026',role:'Admin'}, ops:{pass:'ops2026',role:'Operations Manager'} };
 
   var events=[]; var session=null; var calRef=new Date();
@@ -26,10 +26,10 @@
     if(ev.status==='Closed') return 'past';
     if(!d) return 'new';
     if(d<today) return 'past';
-    var isNew=(ev.status==='New Lead'||ev.status==='Requirement Received');
+    var isNew=(ev.status==='New Lead');
     return isNew?'new':'upcoming';
   }
-  function badgeClass(status){ var i=STAGES.indexOf(status); if(i<=1)return 'new'; if(i>=6)return 'done'; return 'mid'; }
+  function badgeClass(status){ var i=STAGES.indexOf(status); if(i<=0)return 'new'; if(i>=5)return 'done'; return 'mid'; }
   function menuCount(ev){var n=0,m=ev.menu||{};Object.keys(m).forEach(function(c){n+=(m[c]||[]).length;});return n;}
 
   // ===== AUTH =====
@@ -61,11 +61,12 @@
       upcoming:events.filter(function(e){return e.eventDate && new Date(e.eventDate)>=today && e.status!=='Closed';}).length,
       discuss:events.filter(function(e){return e.status==='Discussion Pending';}).length,
       proposal:events.filter(function(e){return e.status==='Proposal Shared';}).length,
+      negotiation:events.filter(function(e){return e.status==='Negotiation';}).length,
       closed:events.filter(function(e){return e.status==='Closed';}).length
     };
-    var cards=[['Total Events',counts.total,''],['New Events',counts.neu,'g'],['Upcoming Events',counts.upcoming,'a'],['Discussion Pending',counts.discuss,'a'],['Proposal Shared',counts.proposal,''],['Closed Events',counts.closed,'r']];
+    var cards=[['Total Events',counts.total,''],['New Leads',counts.neu,'g'],['Upcoming Events',counts.upcoming,'a'],['Discussion Pending',counts.discuss,'a'],['Proposal Shared',counts.proposal,''],['Negotiation',counts.negotiation,'a'],['Closed Events',counts.closed,'r']];
     $('#statCards').innerHTML=cards.map(function(c){return '<div class="stat '+c[2]+'"><div class="v">'+c[1]+'</div><div class="l">'+c[0]+'</div></div>';}).join('');
-    var att=events.filter(function(e){return ['New Lead','Requirement Received','Discussion Pending'].indexOf(e.status)>-1;})
+    var att=events.filter(function(e){return ['New Lead','Discussion Pending'].indexOf(e.status)>-1;})
       .sort(function(a,b){return new Date(b.createdAt||0)-new Date(a.createdAt||0);}).slice(0,6);
     var host=$('#attentionList');
     host.innerHTML = att.length ? '' : '<div class="empty-state"><div class="serif">All caught up</div><p class="small">No leads awaiting first action.</p></div>';
