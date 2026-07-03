@@ -13,6 +13,22 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ZOVRYN Ops">
+<style>
+  /* Create Event dashboard card */
+  .stat.create{cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;transition:transform .15s ease,border-color .15s ease}
+  .stat.create::before{background:var(--gold-grad)}
+  .stat.create:hover{transform:translateY(-2px);border-color:var(--gold)}
+  .stat.create .v{font-size:2rem;line-height:1}
+  .stat.create .l{color:var(--gold)}
+  /* three action buttons wrap neatly on narrow screens */
+  .ev-actions{flex-wrap:wrap}
+  /* Full-height form modal (embedded client form) */
+  .form-modal{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r-lg);max-width:740px;width:100%;height:calc(100vh - 40px);display:flex;flex-direction:column;box-shadow:var(--shadow-lg);margin:auto;overflow:hidden}
+  .form-modal .fm-head{background:#0a0907;border-bottom:1px solid var(--line);padding:16px 22px;display:flex;justify-content:space-between;align-items:center;flex:0 0 auto}
+  .form-modal .fm-head h3{color:var(--gold);margin:0}
+  .form-modal .fm-head .x{background:none;border:none;color:var(--gold);font-size:1.7rem;cursor:pointer;line-height:1;width:auto;padding:0}
+  .form-modal iframe{flex:1 1 auto;width:100%;border:0;background:var(--bg)}
+</style>
 </head>
 <body class="admin-body">
 
@@ -96,6 +112,14 @@
       <div class="detail-sec"><h3>Popular Menu Categories</h3><div id="anByCat"></div></div>
       <div class="detail-sec"><h3>Guests by Event Slot</h3><div id="anBySlot"></div></div>
     </div>
+  </div>
+</div>
+
+<!-- CREATE / EDIT EVENT FORM MODAL (embeds the client form) -->
+<div class="modal-bg" id="formModal">
+  <div class="form-modal">
+    <div class="fm-head"><h3 id="formModalTitle">Create Event</h3><button class="x" id="formModalClose" aria-label="Close">&times;</button></div>
+    <iframe id="formFrame" title="Event form" src="about:blank"></iframe>
   </div>
 </div>
 
