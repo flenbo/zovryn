@@ -57,6 +57,10 @@
     config: CONFIG,
     mode: sheetsEnabled() ? 'live' : 'local',
 
+    // Instant, synchronous read of the last-cached list (no network).
+    // Used to paint the console immediately, then revalidate via all().
+    localList: function(){ return readLocal(); },
+
     // New submission. modifiedBy: 'Client' (default) | 'Admin' | 'Operations'
     submit: function(record, modifiedBy){
       var list = readLocal();

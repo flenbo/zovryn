@@ -49,7 +49,18 @@
   }
   function logout(){ try{sessionStorage.removeItem('zov_admin');}catch(e){} location.reload(); }
 
-  function load(){ S.all().then(function(list){ events=list||[]; renderAll(); }); }
+  function load(){
+    // Paint instantly from the last-cached data, then revalidate from Sheets
+    // in the background — avoids the 8-10s blank wait on the slow backend.
+    var cached=null; try{ cached = S.localList ? S.localList() : null; }catch(e){}
+    if(cached && cached.length){ events=cached; renderAll(); }
+    else { showDashLoading(); }
+    S.all().then(function(list){ events=list||[]; renderAll(); });
+  }
+  function showDashLoading(){
+    var sc=$('#statCards'); if(sc) sc.innerHTML='<div class="stat"><div class="v">…</div><div class="l">Loading live data</div></div>';
+    var al=$('#attentionList'); if(al) al.innerHTML='<div class="empty-state"><div class="serif">Fetching your pipeline…</div><p class="small">One moment while we sync with Google Sheets.</p></div>';
+  }
   function renderAll(){ renderDash(); renderEvents(); renderCalendar(); renderAnalytics(); populateFilters(); }
 
   // ===== DASHBOARD =====
@@ -270,6 +281,9 @@
   function init(){
     try{var s=sessionStorage.getItem('zov_admin'); if(s){session=JSON.parse(s);}}catch(e){}
     if(session) openConsole();
+    // Warm the slow Sheets backend + prime the local cache while the login form
+    // is still up, so the overview paints instantly once the user signs in.
+    else if(S.mode==='live'){ S.all().catch(function(){}); }
     $('#lgBtn').onclick=login;
     $('#lgPass').addEventListener('keydown',function(e){if(e.key==='Enter')login();});
     $('#logoutBtn').onclick=logout;
