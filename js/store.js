@@ -57,14 +57,15 @@
     config: CONFIG,
     mode: sheetsEnabled() ? 'live' : 'local',
 
-    // New client submission
-    submit: function(record){
+    // New submission. modifiedBy: 'Client' (default) | 'Admin' | 'Operations'
+    submit: function(record, modifiedBy){
       var list = readLocal();
       record.fileNumber   = generateFileNumber(list);
       record.status       = 'New Lead';
       record.createdAt     = new Date().toISOString();
       record.lastUpdatedOn = record.createdAt;
-      record.lastModifiedBy = 'Client';
+      record.lastModifiedBy = modifiedBy || 'Client';
+      record.createdBy      = modifiedBy || 'Client';
       record.internalNotes = { discussion:'', proposal:'', followup:'' };
       list.push(record);
       writeLocal(list);

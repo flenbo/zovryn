@@ -38,6 +38,12 @@
   ];
   var current = 0;
 
+  // ---- Embedded mode (admin/ops opens this form inside the console) ----
+  var Q = new URLSearchParams(location.search);
+  var EMBED = Q.has('embed') || Q.has('by');
+  var ACTOR = (function(){ var b=(Q.get('by')||'').toLowerCase(); if(b==='admin')return 'Admin'; if(b==='ops'||b==='operations')return 'Operations'; return 'Client'; })();
+  function postParent(type, extra){ if(EMBED && window.parent && window.parent!==window){ try{ window.parent.postMessage(Object.assign({type:type},extra||{}),'*'); }catch(e){} } }
+
   function toast(msg, kind){
     var t=$('#toast'); t.textContent=msg; t.className='toast show '+(kind||'');
     clearTimeout(t._t); t._t=setTimeout(function(){t.className='toast';},2600);
@@ -285,11 +291,11 @@
     Object.keys(clean.menu).forEach(function(c){ if(!clean.menu[c] || !clean.menu[c].length) delete clean.menu[c]; });
     if(editing){
       var patch={}; EDITABLE.forEach(function(k){ patch[k]=clean[k]; });
-      window.GG_STORE.update(currentFileNumber, patch, 'Client').then(function(){
+      window.GG_STORE.update(currentFileNumber, patch, ACTOR).then(function(){
         window.GG_STORE.get(currentFileNumber).then(function(rec){ lastRecord=rec||Object.assign({fileNumber:currentFileNumber},clean); finishThankYou(true); });
       }).catch(function(){ toast('Something went wrong. Please try again.','err'); btn.disabled=false; renderStep(); });
     } else {
-      window.GG_STORE.submit(clean).then(function(saved){ lastRecord=saved; currentFileNumber=saved.fileNumber; finishThankYou(false); })
+      window.GG_STORE.submit(clean, ACTOR).then(function(saved){ lastRecord=saved; currentFileNumber=saved.fileNumber; finishThankYou(false); })
         .catch(function(){ toast('Something went wrong. Please try again.','err'); btn.disabled=false; renderStep(); });
     }
   }
@@ -300,6 +306,7 @@
     $('#tyHeading').textContent = wasUpdate ? 'Your Submission Has Been Updated!' : 'Thank You for Sharing Your Requirements!';
     $('#nextBtn').disabled=false;
     showScreen('thankyou');
+    postParent('zovryn:saved', {fileNumber:currentFileNumber, wasUpdate:!!wasUpdate});
   }
 
   // ================= EXISTING CLIENT LOGIN =================
@@ -328,7 +335,8 @@
     editing = true; currentFileNumber = rec.fileNumber; lastRecord = rec;
     $('#editBanner').style.display=''; $('#editFileNo').textContent=rec.fileNumber;
     current = 0; showScreen('form');
-    toast('Welcome back, '+(rec.clientName||'')+' — File '+rec.fileNumber,'ok');
+    if(EMBED) toast('Editing File '+rec.fileNumber+' — changes save for everyone','ok');
+    else toast('Welcome back, '+(rec.clientName||'')+' — File '+rec.fileNumber,'ok');
   }
 
   // ================= SCREENS =================
@@ -381,7 +389,7 @@
     // form nav
     $('#nextBtn').onclick=function(){ go(1); };
     $('#backBtn').onclick=function(){ go(-1); };
-    $('#newEnquiryBtn').onclick=function(){ location.reload(); };
+    $('#newEnquiryBtn').onclick=function(){ if(EMBED){ postParent('zovryn:close'); } else { location.reload(); } };
 
     // thank-you actions
     $('#dlPdfBtn').onclick=function(){ if(lastRecord) window.GG_PDF(lastRecord); };
@@ -401,6 +409,19 @@
       ];
       window.open('https://wa.me/919311877986?text='+encodeURIComponent(lines.join('\n')),'_blank','noopener');
     };
+
+    // ---- Embedded / deep-link routing (admin & ops "Create" / "Edit Event") ----
+    if(EMBED) document.body.classList.add('embed');
+    var flow=Q.get('flow');
+    if(flow==='new'){
+      startNewCustomer();
+    } else if(flow==='edit' && Q.get('file')){
+      var fno=Q.get('file');
+      window.GG_STORE.get(fno).then(function(rec){
+        if(rec) loadRecord(rec);
+        else { toast('File '+fno+' not found.','err'); startNewCustomer(); }
+      }).catch(function(){ toast('Could not load File '+fno,'err'); });
+    }
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
   else init();

@@ -65,7 +65,9 @@
       closed:events.filter(function(e){return e.status==='Closed';}).length
     };
     var cards=[['Total Events',counts.total,''],['New Leads',counts.neu,'g'],['Upcoming Events',counts.upcoming,'a'],['Discussion Pending',counts.discuss,'a'],['Proposal Shared',counts.proposal,''],['Negotiation',counts.negotiation,'a'],['Closed Events',counts.closed,'r']];
-    $('#statCards').innerHTML=cards.map(function(c){return '<div class="stat '+c[2]+'"><div class="v">'+c[1]+'</div><div class="l">'+c[0]+'</div></div>';}).join('');
+    $('#statCards').innerHTML=cards.map(function(c){return '<div class="stat '+c[2]+'"><div class="v">'+c[1]+'</div><div class="l">'+c[0]+'</div></div>';}).join('')
+      +'<div class="stat create" id="createEventCard" title="Add a new lead"><div class="v">＋</div><div class="l">Create Event</div></div>';
+    var cec=$('#createEventCard'); if(cec) cec.onclick=function(){ openFormModal('new'); };
     var att=events.filter(function(e){return ['New Lead','Discussion Pending'].indexOf(e.status)>-1;})
       .sort(function(a,b){return new Date(b.createdAt||0)-new Date(a.createdAt||0);}).slice(0,6);
     var host=$('#attentionList');
@@ -90,9 +92,10 @@
         '<span class="badge by">Modified by: '+esc(e.lastModifiedBy||'Client')+'</span>'+
         '<span>Updated: <b>'+esc(fmtTime(e.lastUpdatedOn||e.createdAt))+'</b></span>'+
       '</div>'+
-      '<div class="ev-actions"><button class="btn sm btn-gold act-view">View</button><button class="btn sm btn-ghost act-edit">Edit Status</button></div>';
+      '<div class="ev-actions"><button class="btn sm btn-gold act-view">View</button><button class="btn sm btn-ghost act-edit">Edit Status</button><button class="btn sm btn-ghost act-editev">Edit Event</button></div>';
     c.querySelector('.act-view').onclick=function(ev){ev.stopPropagation();openDetail(e.fileNumber,false);};
     c.querySelector('.act-edit').onclick=function(ev){ev.stopPropagation();openDetail(e.fileNumber,true);};
+    c.querySelector('.act-editev').onclick=function(ev){ev.stopPropagation();openFormModal('edit',e.fileNumber);};
     c.onclick=function(){openDetail(e.fileNumber,false);};
     return c;
   }
@@ -191,6 +194,18 @@
   }
   function closeModal(){ $('#detailModal').classList.remove('show'); document.body.classList.remove('no-scroll'); }
 
+  // ===== CREATE / EDIT EVENT (embedded client form) =====
+  function openFormModal(mode, fileNumber){
+    var by = actorRole()==='Operations' ? 'ops' : 'admin';
+    var src = 'index.html?embed=1&by='+by+(mode==='edit'
+      ? '&flow=edit&file='+encodeURIComponent(fileNumber)
+      : '&flow=new')+'&t='+Date.now();
+    $('#formFrame').src=src;
+    $('#formModalTitle').textContent = mode==='edit' ? ('Edit Event · File '+fileNumber) : 'Create Event';
+    $('#formModal').classList.add('show'); document.body.classList.add('no-scroll');
+  }
+  function closeFormModal(){ $('#formModal').classList.remove('show'); document.body.classList.remove('no-scroll'); $('#formFrame').src='about:blank'; }
+
   // ===== CALENDAR =====
   function renderCalendar(){
     var dows=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -264,6 +279,17 @@
     $('#exportBtn').onclick=exportExcel;
     $('#mClose').onclick=closeModal;
     $('#detailModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+    $('#formModalClose').onclick=closeFormModal;
+    $('#formModal').addEventListener('click',function(e){if(e.target===this)closeFormModal();});
+    window.addEventListener('message',function(ev){
+      var d=ev.data||{};
+      if(d.type==='zovryn:saved'){
+        toast(d.wasUpdate?('Event updated · File '+d.fileNumber):('Lead created · File '+d.fileNumber),'ok');
+        load(); setTimeout(load,2500);
+      } else if(d.type==='zovryn:close'){
+        closeFormModal(); load();
+      }
+    });
     $('#calPrev').onclick=function(){calRef.setMonth(calRef.getMonth()-1);renderCalendar();};
     $('#calNext').onclick=function(){calRef.setMonth(calRef.getMonth()+1);renderCalendar();};
     if(S.mode==='live') setInterval(load, 30000);
