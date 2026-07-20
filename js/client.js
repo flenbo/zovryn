@@ -408,7 +408,7 @@
     $('#shareWaBtn').onclick=function(){
       if(!lastRecord)return; var m=lastRecord;
       var lines=[
-        '*ZOVRYN — Event Enquiry*',
+        '*Gourmet Gatherings — Event Enquiry*',
         'File Number: '+m.fileNumber,
         'Name: '+m.clientName,
         'Type: '+m.eventType+(m.eventTypeOther?' ('+m.eventTypeOther+')':''),
@@ -417,9 +417,9 @@
         'Menu items: '+Object.keys(m.menu||{}).reduce(function(n,c){return n+m.menu[c].length;},0),
         'Preferred call: '+m.discDate+' '+m.discTime,
         '',
-        'Sent via the ZOVRYN Experience Portal.'
+        'Sent via the Gourmet Gatherings Experience Portal.'
       ];
-      window.open('https://wa.me/919311877986?text='+encodeURIComponent(lines.join('\n')),'_blank','noopener');
+      window.open('https://wa.me/919311877987?text='+encodeURIComponent(lines.join('\n')),'_blank','noopener');
     };
 
     // ---- Embedded / deep-link routing (admin & ops "Create" / "Edit Event") ----

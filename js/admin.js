@@ -197,7 +197,7 @@
     var act=el('div','btn-row'); act.style.marginTop='6px';
     var pdfB=el('button','btn btn-gold','⬇ Download PDF'); pdfB.onclick=function(){window.GG_PDF(e);};
     var waB=el('button','btn btn-wa','WhatsApp Client');
-    waB.onclick=function(){window.open('https://wa.me/'+(e.mobile||'').replace(/\D/g,'')+'?text='+encodeURIComponent('Hello '+cap(e.clientName)+', warm greetings from ZOVRYN regarding your enquiry — File '+e.fileNumber+'.'),'_blank','noopener');};
+    waB.onclick=function(){window.open('https://wa.me/'+(e.mobile||'').replace(/\D/g,'')+'?text='+encodeURIComponent('Hello '+cap(e.clientName)+', warm greetings from Gourmet Gatherings regarding your enquiry — File '+e.fileNumber+'.'),'_blank','noopener');};
     act.appendChild(pdfB); act.appendChild(waB); body.appendChild(act);
 
     $('#detailModal').classList.add('show'); document.body.classList.add('no-scroll');
@@ -273,7 +273,7 @@
     var proj=events.filter(function(e){return ['Proposal Shared','Negotiation','Confirmed'].indexOf(e.status)>-1;}).reduce(function(s,e){return s+parseInt(e.pax||0,10)*1550;},0);
     var s3=[{'Metric':'Total Leads','Value':total},{'Metric':'Conversion %','Value':(total?Math.round(confirmed/total*100):0)+'%'},{'Metric':'Upcoming Events','Value':upcoming},{'Metric':'Revenue Projection (₹)','Value':proj}];
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(s3),'Analytics Dashboard');
-    XLSX.writeFile(wb,'ZOVRYN-Events-'+new Date().toISOString().slice(0,10)+'.xlsx');
+    XLSX.writeFile(wb,'Gourmet-Gatherings-Events-'+new Date().toISOString().slice(0,10)+'.xlsx');
     toast('Exported '+events.length+' events','ok');
   }
 

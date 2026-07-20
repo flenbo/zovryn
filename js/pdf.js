@@ -7,13 +7,14 @@
 (function(){
   'use strict';
 
-  var GOLD=[176,138,74], GOLD_SOFT=[201,166,101], CHAR=[30,26,20], MUTED=[140,131,117], LINE=[222,212,192], DARK=[20,17,12];
+  /* GOLD kept as the accent-var name but now holds Gourmet red; DARK now holds the light header band colour */
+  var GOLD=[216,30,58], GOLD_SOFT=[231,69,95], CHAR=[30,26,20], MUTED=[140,131,117], LINE=[224,214,198], DARK=[255,253,248];
   var LOGO = window.GG_LOGO || null;
 
   function cap(s){ return (s||'').replace(/\b\w/g,function(c){return c.toUpperCase();}); }
 
   var TERMS = {
-    intro:"ZOVRYN is Delhi NCR's luxury culinary and experiential hospitality brand, operated by Flenbo Foodworks Private Limited. Whether it's a private celebration, a corporate gathering, or a social function, we pride ourselves on delivering excellence, personalization, and seamless execution.",
+    intro:"Gourmet Gatherings is Delhi NCR's premium culinary and experiential hospitality brand, operated by Flenbo Foodworks Private Limited. Whether it's a private celebration, a corporate gathering, or a social function, we pride ourselves on delivering excellence, personalization, and seamless execution.",
     highlightsTitle:"Some highlights about us:",
     highlights:[
       "Operated by a passionate team of culinary professionals and hospitality experts",
@@ -87,8 +88,8 @@
     function footer(){
       doc.setDrawColor(LINE[0],LINE[1],LINE[2]); doc.setLineWidth(.5); doc.line(M, H-46, W-M, H-46);
       doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(MUTED[0],MUTED[1],MUTED[2]);
-      doc.text('ZOVRYN  ·  Operated by Flenbo Foodworks Private Limited', M, H-33);
-      doc.text('+91 93118 77986  ·  customercare@flenbo.com  ·  @thezovryn', W-M, H-33, {align:'right'});
+      doc.text('Gourmet Gatherings  ·  Operated by Flenbo Foodworks Private Limited', M, H-33);
+      doc.text('+91 93118 77987  ·  customercare@flenbo.com  ·  @gatherings.gourmet', W-M, H-33, {align:'right'});
       doc.setFontSize(7); doc.setTextColor(GOLD[0],GOLD[1],GOLD[2]);
       doc.text('GSTIN: 06AAFCF3966J1ZC     ·     UDYAM-HR-05-0080298', W/2, H-19, {align:'center'});
     }
@@ -107,10 +108,10 @@
       y = 146;
     }
     function textLogo(){
-      doc.setFont('times','bold'); doc.setFontSize(26); doc.setTextColor(GOLD_SOFT[0],GOLD_SOFT[1],GOLD_SOFT[2]);
-      doc.text('Z O V R Y N', W/2, 58, {align:'center'});
-      doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(GOLD[0],GOLD[1],GOLD[2]);
-      doc.text('BESPOKE CATERING & PRIVATE DINING', W/2, 78, {align:'center'});
+      doc.setFont('helvetica','bold'); doc.setFontSize(24); doc.setTextColor(GOLD[0],GOLD[1],GOLD[2]);
+      doc.text('GOURMET GATHERINGS', W/2, 56, {align:'center'});
+      doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(MUTED[0],MUTED[1],MUTED[2]);
+      doc.text('PREMIUM CULINARY EXPERIENCE', W/2, 76, {align:'center'});
     }
 
     function sectionTitle(t){
@@ -217,11 +218,11 @@
     doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(CHAR[0],CHAR[1],CHAR[2]);
     ensure(78); doc.text('Warm regards,', M, y); y+=13; doc.text('Flenbo Foodworks Private Limited', M, y); y+=18;
     doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(55,50,46);
-    doc.text('+91 93118 77986', M, y); y+=14;
+    doc.text('+91 93118 77987', M, y); y+=14;
     doc.text('customercare@flenbo.com', M, y); y+=14;
-    doc.text('@thezovryn', M, y);
+    doc.text('@gatherings.gourmet', M, y);
 
     footer();
-    doc.save('ZOVRYN-'+(rec.fileNumber||'enquiry')+'.pdf');
+    doc.save('Gourmet-Gatherings-'+(rec.fileNumber||'enquiry')+'.pdf');
   };
 })();
