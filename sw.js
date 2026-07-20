@@ -1,7 +1,7 @@
-/* ZOVRYN — minimal service worker (enables PWA install).
+/* Gourmet Gatherings — minimal service worker (enables PWA install).
    Network-first so the app always loads the latest deploy;
    falls back to cache when offline. */
-var CACHE = 'zovryn-v2';
+var CACHE = 'gg-v1';
 
 self.addEventListener('install', function(e){ self.skipWaiting(); });
 

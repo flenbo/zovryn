@@ -1,13 +1,13 @@
 {
-  "name": "ZOVRYN — Bespoke Catering & Private Dining",
-  "short_name": "ZOVRYN",
-  "description": "Bespoke catering and private dining experiences across Delhi NCR.",
+  "name": "Gourmet Gatherings — Premium Culinary Experience",
+  "short_name": "Gourmet Gatherings",
+  "description": "Premium culinary experiences and bespoke catering across Delhi NCR.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0C0B09",
-  "theme_color": "#0C0B09",
+  "background_color": "#FFFDF8",
+  "theme_color": "#FFFDF8",
   "icons": [
     { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },

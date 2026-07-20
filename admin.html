@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0C0B09">
-<title>ZOVRYN — Operations Console</title>
+<meta name="theme-color" content="#FFFDF8">
+<title>Gourmet Gatherings — Operations Console</title>
 <link rel="stylesheet" href="css/styles.css">
-<link rel="icon" href="assets/zovryn-crest.png">
+<link rel="icon" href="assets/gg-icon.png">
 <link rel="manifest" href="manifest-admin.json">
 <link rel="apple-touch-icon" href="assets/icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="ZOVRYN Ops">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Gourmet Gatherings Ops">
 <style>
   /* Create Event dashboard card */
   .stat.create{cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;transition:transform .15s ease,border-color .15s ease}
@@ -24,7 +24,7 @@
   .ev-actions{flex-wrap:wrap}
   /* Full-height form modal (embedded client form) */
   .form-modal{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r-lg);max-width:740px;width:100%;height:calc(100vh - 40px);display:flex;flex-direction:column;box-shadow:var(--shadow-lg);margin:auto;overflow:hidden}
-  .form-modal .fm-head{background:#0a0907;border-bottom:1px solid var(--line);padding:16px 22px;display:flex;justify-content:space-between;align-items:center;flex:0 0 auto}
+  .form-modal .fm-head{background:#fff;border-bottom:1px solid var(--line);padding:16px 22px;display:flex;justify-content:space-between;align-items:center;flex:0 0 auto}
   .form-modal .fm-head h3{color:var(--gold);margin:0}
   .form-modal .fm-head .x{background:none;border:none;color:var(--gold);font-size:1.7rem;cursor:pointer;line-height:1;width:auto;padding:0}
   .form-modal iframe{flex:1 1 auto;width:100%;border:0;background:var(--bg)}
@@ -35,7 +35,7 @@
 <!-- ============ LOGIN ============ -->
 <div class="login-wrap" id="loginWrap">
   <div class="login-card">
-    <img class="brand-logo" src="assets/zovryn-logo.png" alt="ZOVRYN">
+    <img class="brand-logo" src="assets/gg-logo.png" alt="Gourmet Gatherings">
     <div class="eyebrow">Operations Console</div>
     <p class="small muted" style="margin:10px 0 22px">Sign in to manage leads &amp; events</p>
     <div class="field"><label>Username</label><input id="lgUser" autocomplete="username" placeholder="admin"></div>
@@ -50,7 +50,7 @@
 <div class="admin-shell" id="console" style="display:none">
   <div class="sync-banner local" id="aSync">Local mode — showing data saved on this device.</div>
   <div class="admin-top">
-    <div><img src="assets/zovryn-crest.png" alt="ZOVRYN" style="height:44px;width:auto;display:block"></div>
+    <div style="display:flex;align-items:center;gap:10px"><img src="assets/gg-icon.png" alt="Gourmet Gatherings" style="height:38px;width:auto;display:block;border-radius:8px"><strong style="font-family:var(--serif);font-weight:700;font-size:1rem;color:var(--text);letter-spacing:.01em">Gourmet Gatherings</strong></div>
     <div style="display:flex;align-items:center;gap:14px">
       <span class="who" id="whoami">Admin</span>
       <button class="btn sm btn-ghost" id="refreshBtn">↻ Refresh</button>
