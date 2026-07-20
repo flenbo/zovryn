@@ -183,7 +183,7 @@
     body.appendChild(mn);
 
     body.appendChild(kvsec('Additional Notes',[['Notes',e.notes||'—']]));
-    body.appendChild(kvsec('Discussion Preferences',[['Preferred',(e.discDate||'')+' '+(e.discTime||'')],['Alternate',(e.discAltDate||e.discAltTime)?((e.discAltDate||'')+' '+(e.discAltTime||'')):'']]));
+    body.appendChild(kvsec('Discussion Preferences',[['Preferred',(e.discDate||'')+' '+(e.discTime||'')]]));
 
     var iN=e.internalNotes||{};
     var ns=el('div','detail-sec'); ns.innerHTML='<h3>Internal Notes</h3>';
@@ -283,7 +283,7 @@
     var wb=XLSX.utils.book_new();
     var s1=events.map(function(e){
       var menuStr=Object.keys(e.menu||{}).map(function(c){return c+': '+e.menu[c].join(', ');}).join(' | ');
-      return {'File Number':e.fileNumber,'Client Name':e.clientName,'Mobile':e.mobile,'Event Date':e.eventDate,'Event Slot':e.eventSlot,'Event Time':e.eventTime,'Event Type':e.eventType,'Occasion':e.occasion,'PAX':e.pax,'Dietary':e.dietary,'Location':e.location,'Venue':e.venue,'Services':(e.services||[]).join(', '),'Add-ons':(e.addons||[]).join(', '),'Menu Selection':menuStr,'Custom Menu':e.customMenu||'','Notes':e.notes||'','Discussion Preference':(e.discDate||'')+' '+(e.discTime||'')+(e.discAltDate?(' / alt '+e.discAltDate+' '+(e.discAltTime||'')):''),'Status':e.status,'Last Modified By':e.lastModifiedBy||'Client','Last Updated On':e.lastUpdatedOn||e.createdAt,'Created On':e.createdAt};
+      return {'File Number':e.fileNumber,'Client Name':e.clientName,'Mobile':e.mobile,'Event Date':e.eventDate,'Event Slot':e.eventSlot,'Event Time':e.eventTime,'Event Type':e.eventType,'Occasion':e.occasion,'PAX':e.pax,'Dietary':e.dietary,'Location':e.location,'Venue':e.venue,'Services':(e.services||[]).join(', '),'Add-ons':(e.addons||[]).join(', '),'Menu Selection':menuStr,'Custom Menu':e.customMenu||'','Notes':e.notes||'','Discussion Preference':(e.discDate||'')+' '+(e.discTime||''),'Status':e.status,'Last Modified By':e.lastModifiedBy||'Client','Last Updated On':e.lastUpdatedOn||e.createdAt,'Created On':e.createdAt};
     });
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(s1.length?s1:[{'File Number':''}]),'Event Submissions');
     var s2=events.map(function(e){var n=e.internalNotes||{};return {'File Number':e.fileNumber,'Client':e.clientName,'Discussion Date':(e.discDate||'')+' '+(e.discTime||''),'Discussion Notes':n.discussion||'','Follow-up Actions':n.followup||'','Proposal Status':n.proposal?'Notes added':(e.status==='Proposal Shared'?'Shared':'Pending'),'Last Modified By':e.lastModifiedBy||'Client','Last Updated On':e.lastUpdatedOn||e.createdAt};});

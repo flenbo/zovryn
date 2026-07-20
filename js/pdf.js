@@ -190,7 +190,6 @@
 
     sectionTitle('Discussion Round Preferences');
     kv('Preferred Date', rec.discDate); kv('Preferred Time', rec.discTime);
-    kv('Alternate Date', rec.discAltDate); kv('Alternate Time', rec.discAltTime);
 
     footer();
 

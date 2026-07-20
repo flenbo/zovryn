@@ -246,7 +246,7 @@
       '<div class="eyebrow" style="margin-top:14px">Menu — '+menuCount+' dishes</div>'+(menuHtml||'<p class="small muted">No dishes selected yet.</p>')+
       (state.customMenu?line('Custom Request', esc(state.customMenu)):'')+
       '<div class="eyebrow" style="margin-top:14px">Notes</div><p class="small">'+(esc(state.notes)||'—')+'</p>'+
-      '<div class="eyebrow" style="margin-top:14px">Discussion</div>'+line('Preferred', esc(state.discDate)+' '+esc(state.discTime))+line('Alternate', (state.discAltDate||state.discAltTime)?esc(state.discAltDate)+' '+esc(state.discAltTime):'');
+      '<div class="eyebrow" style="margin-top:14px">Discussion</div>'+line('Preferred', esc(state.discDate)+' '+esc(state.discTime));
     b.appendChild(c);
     var note=el('p','small muted center'); note.style.marginTop='14px'; note.textContent='By submitting, you agree to be contacted by our team regarding this enquiry.';
     b.appendChild(note);
