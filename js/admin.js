@@ -30,6 +30,15 @@
     return isNew?'new':'upcoming';
   }
   function badgeClass(status){ var i=STAGES.indexOf(status); if(i<=0)return 'new'; if(i>=5)return 'done'; return 'mid'; }
+  // Calendar colour state (4 categories, matches the legend): new · upcoming · past · closed
+  function calState(ev){
+    var today=new Date(); today.setHours(0,0,0,0);
+    var d=ev.eventDate?new Date(ev.eventDate):null;
+    if(ev.status==='Closed') return 'closed';
+    if(!d) return 'new';
+    if(d<today) return 'past';
+    return ev.status==='New Lead' ? 'new' : 'upcoming';
+  }
   function menuCount(ev){var n=0,m=ev.menu||{};Object.keys(m).forEach(function(c){n+=(m[c]||[]).length;});return n;}
 
   // ===== AUTH =====
@@ -253,7 +262,7 @@
       var ds=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
       var cell=el('div','cal-cell'+(ds===todayStr?' today':'')); cell.innerHTML='<div class="cd">'+d+'</div>';
       var evs=byDate[ds]||[];
-      if(evs.length){ var e0=evs[0]; var chip=el('div','cev '+timing(e0), esc(cap(e0.clientName).split(' ')[0])+(evs.length>1?' +'+(evs.length-1):'')); cell.appendChild(chip); cell.style.cursor='pointer'; cell.onclick=(function(dstr,fn,cnt){ return function(){ if(cnt>1) openDayEvents(dstr); else openDetail(fn,false); }; })(ds, e0.fileNumber, evs.length); }
+      if(evs.length){ var e0=evs[0]; var chip=el('div','cev '+calState(e0), esc(cap(e0.clientName).split(' ')[0])+(evs.length>1?' +'+(evs.length-1):'')); cell.appendChild(chip); cell.style.cursor='pointer'; cell.onclick=(function(dstr,fn,cnt){ return function(){ if(cnt>1) openDayEvents(dstr); else openDetail(fn,false); }; })(ds, e0.fileNumber, evs.length); }
       grid.appendChild(cell);
     }
   }
