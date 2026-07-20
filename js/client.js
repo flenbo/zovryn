@@ -163,7 +163,7 @@
   function rServices(b){
     b.appendChild(intro('Services & Experiences','Select everything you\'d like us to bring to life. Choose as many as you wish.'));
     var fsv=field('Services Required <span class="req">*</span>', optCards(D.servicesRequired, state.services, true, function(){})); fsv.dataset.key='services'; fsv.appendChild(errNode()); b.appendChild(fsv);
-    b.appendChild(field('Add-on Resources', optCards(D.addOnResources, state.addons, true, function(){})));
+    var fad=field('Add-on Resources <span class="req">*</span>', optCards(D.addOnResources, state.addons, true, function(){})); fad.dataset.key='addons'; fad.appendChild(errNode()); b.appendChild(fad);
   }
 
   function rMenu(b){
@@ -284,7 +284,10 @@
         if(!state.venue.trim()){ failKey(b,'venue'); ok=false; }
       }
     }
-    if(STRICT && id==='services' && !state.services.length){ failKey(b,'services'); ok=false; }
+    if(STRICT && id==='services'){
+      if(!state.services.length){ failKey(b,'services'); ok=false; }
+      if(!state.addons.length){ failKey(b,'addons'); ok=false; }
+    }
     if(STRICT && id==='menu'){
       var mc=0; Object.keys(state.menu).forEach(function(c){ mc+=(state.menu[c]||[]).length; });
       if(mc===0 && !state.customMenu.trim()){ failKey(b,'menu'); ok=false; }
