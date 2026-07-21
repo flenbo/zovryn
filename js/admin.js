@@ -192,7 +192,7 @@
     body.appendChild(mn);
 
     body.appendChild(kvsec('Additional Notes',[['Notes',e.notes||'—']]));
-    body.appendChild(kvsec('Discussion Preferences',[['Preferred',(e.discDate||'')+' '+(e.discTime||'')]]));
+    body.appendChild(kvsec('Discussion Preferences',[['Preferred',(e.discDate?prettyDate(e.discDate):'')+' '+(e.discTime||'')]]));
 
     var iN=e.internalNotes||{};
     var ns=el('div','detail-sec'); ns.innerHTML='<h3>Internal Notes</h3>';

@@ -12,6 +12,7 @@
   var LOGO = window.GG_LOGO || null;
 
   function cap(s){ return (s||'').replace(/\b\w/g,function(c){return c.toUpperCase();}); }
+  function fmtD(ds){ if(!ds) return ''; try{ return new Date(String(ds)+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}); }catch(e){ return ds; } }
 
   var TERMS = {
     intro:"Gourmet Gatherings is Delhi NCR's premium culinary and experiential hospitality brand, operated by Flenbo Foodworks Private Limited. Whether it's a private celebration, a corporate gathering, or a social function, we pride ourselves on delivering excellence, personalization, and seamless execution.",
@@ -167,7 +168,7 @@
 
     sectionTitle('Event Details');
     kv('Event Type', cap(rec.eventType) + (rec.eventTypeOther? ' ('+rec.eventTypeOther+')':''));
-    kv('Date of Event', rec.eventDate); kv('Event Slot', cap(rec.eventSlot)); kv('Event Time', rec.eventTime);
+    kv('Date of Event', fmtD(rec.eventDate)); kv('Event Slot', cap(rec.eventSlot)); kv('Event Time', rec.eventTime);
     kv('Occasion', rec.occasion); kv('Guest Count / PAX', rec.pax); kv('Dietary Preference', cap(rec.dietary));
     kv('Event Location', cap(rec.location) + (rec.locationOther? ' ('+rec.locationOther+')':'')); kv('Venue Address', rec.venue);
     if(rec.services && rec.services.length) kv('Services Required', rec.services.map(cap).join(', '));
@@ -189,7 +190,7 @@
     para(rec.notes ? rec.notes : 'No additional notes provided.');
 
     sectionTitle('Discussion Round Preferences');
-    kv('Preferred Date', rec.discDate); kv('Preferred Time', rec.discTime);
+    kv('Preferred Date', fmtD(rec.discDate)); kv('Preferred Time', rec.discTime);
 
     footer();
 

@@ -239,14 +239,14 @@
       '<div class="eyebrow">Client</div>'+line('Name',esc(state.clientName))+line('Mobile',esc(state.mobile))+
       '<div class="eyebrow" style="margin-top:14px">Event</div>'+
       line('Type', esc(state.eventType)+(state.eventTypeOther?' ('+esc(state.eventTypeOther)+')':''))+
-      line('Date', esc(state.eventDate))+line('Slot', esc(state.eventSlot))+line('Time', esc(state.eventTime))+
+      line('Date', esc(fmtD(state.eventDate)))+line('Slot', esc(state.eventSlot))+line('Time', esc(state.eventTime))+
       line('Occasion', esc(state.occasion))+line('PAX', esc(state.pax))+line('Dietary', esc(state.dietary))+
       line('Location', esc(state.location)+(state.locationOther?' ('+esc(state.locationOther)+')':''))+line('Venue', esc(state.venue))+
       line('Services', state.services.map(esc).join(', '))+line('Add-ons', state.addons.map(esc).join(', '))+
       '<div class="eyebrow" style="margin-top:14px">Menu — '+menuCount+' dishes</div>'+(menuHtml||'<p class="small muted">No dishes selected yet.</p>')+
       (state.customMenu?line('Custom Request', esc(state.customMenu)):'')+
       '<div class="eyebrow" style="margin-top:14px">Notes</div><p class="small">'+(esc(state.notes)||'—')+'</p>'+
-      '<div class="eyebrow" style="margin-top:14px">Discussion</div>'+line('Preferred', esc(state.discDate)+' '+esc(state.discTime));
+      '<div class="eyebrow" style="margin-top:14px">Discussion</div>'+line('Preferred', esc(fmtD(state.discDate))+' '+esc(state.discTime));
     b.appendChild(c);
     var note=el('p','small muted center'); note.style.marginTop='14px'; note.textContent='By submitting, you agree to be contacted by our team regarding this enquiry.';
     b.appendChild(note);
@@ -255,6 +255,7 @@
   function intro(h2,txt){var d=el('div','step-intro'); d.innerHTML='<h2>'+h2+'</h2><p>'+txt+'</p>'; return d;}
   function esc(s){return (s==null?'':String(s)).replace(/[<>&]/g,function(c){return{'<':'&lt;','>':'&gt;','&':'&amp;'}[c];});}
   function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-');}
+  function fmtD(ds){ if(!ds) return ''; try{ return new Date(String(ds)+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}); }catch(e){ return ds; } }
 
   // ================= VALIDATION =================
   function validate(){
@@ -432,10 +433,10 @@
         'File Number: '+m.fileNumber,
         'Name: '+m.clientName,
         'Type: '+m.eventType+(m.eventTypeOther?' ('+m.eventTypeOther+')':''),
-        'Date: '+m.eventDate+'  ·  '+m.eventSlot+'  '+m.eventTime,
+        'Date: '+fmtD(m.eventDate)+'  ·  '+m.eventSlot+'  '+m.eventTime,
         'PAX: '+m.pax+'  ·  Dietary: '+m.dietary,
         'Menu items: '+Object.keys(m.menu||{}).reduce(function(n,c){return n+m.menu[c].length;},0),
-        'Preferred call: '+m.discDate+' '+m.discTime,
+        'Preferred call: '+fmtD(m.discDate)+' '+m.discTime,
         '',
         'Sent via the Gourmet Gatherings Experience Portal.'
       ];
